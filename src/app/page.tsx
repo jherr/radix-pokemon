@@ -1,95 +1,59 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { Flex, Text, Heading, Box, Button, Card } from "@radix-ui/themes";
+import Link from "next/link";
+import { getSignInUrl, getUser } from "@workos-inc/authkit-nextjs";
 
-export default function Home() {
+import { getDecks } from "@/db";
+
+import Header from "./components/header";
+import DeckCreator from "@/components/deck-creator";
+import PokemonGrid from "@/components/pokemon-grid";
+
+export default async function Home() {
+  const { user } = await getUser();
+  const signInUrl = await getSignInUrl();
+
+  const decks = await getDecks();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+    <main>
+      {user ? (
+        <>
+          <Header />
+          <Heading>Pokemon Deck Builder</Heading>
+          <DeckCreator />
+          <Flex direction="column" gap="3">
+            {decks.map((deck) => (
+              <Card key={deck.id} my="2">
+                <Link href={`/deck/${deck.id}`}>
+                  <Heading as="h2">{deck.name}</Heading>
+                  <Box p="2">
+                    {deck.cards.length > 0 ? (
+                      <PokemonGrid pokemon={deck.cards.slice(0, 5)} />
+                    ) : (
+                      <Box mb="3">
+                        <Text>
+                          No Pokemon in this deck, yet. You should add some!
+                        </Text>
+                      </Box>
+                    )}
+                  </Box>
+                </Link>
+              </Card>
+            ))}
+          </Flex>
+        </>
+      ) : (
+        <Card mt="9">
+          <Box p="5">
+            <Heading>Sign in to start creating Pokemon Decks</Heading>
+            <Box mt="5">
+              <Button size="3">
+                <a href={signInUrl}>Sign in</a>
+              </Button>
+            </Box>
+          </Box>
+        </Card>
+      )}
     </main>
   );
 }

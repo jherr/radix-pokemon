@@ -9,16 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@libsql/client": "^0.6.2",
+    "@radix-ui/themes": "^3.0.5",
+    "@workos-inc/authkit-nextjs": "^0.6.1",
+    "next": "14.2.3",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.3"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "typescript": "^5"
   }
 }

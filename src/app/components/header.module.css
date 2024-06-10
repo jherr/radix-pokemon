@@ -1,0 +1,8 @@
+.header {
+  background: var(--accent-5);
+  border-bottom-left-radius: var(--radius-5);
+  border-bottom-right-radius: var(--radius-5);
+  margin-left: var(--space-4);
+  margin-right: var(--space-4);
+  box-shadow: 5px 5px 10px var(--accent-9);
+}
