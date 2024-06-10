@@ -17,7 +17,7 @@ export default function Search({
   const [pokemon, setPokemon] = useState(initialPokemon);
 
   const search = async () => {
-    const resp = await fetch(`/pokemonSearch?q=${encodeURIComponent(query)}`);
+    const resp = await fetch(`/searchPokemon?q=${encodeURIComponent(query)}`);
     const data = await resp.json();
     setPokemon(data);
   };
